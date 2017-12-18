@@ -1,0 +1,5 @@
+#!/bin/sh
+
+java -cp ../sentimentAnalysis/out/artifacts/sentimentAnalysis_jar/sentimentAnalysis.jar databasebuilding.BuildNGrams
+
+java -cp ../sentimentAnalysis/out/artifacts/sentimentAnalysis_jar/sentimentAnalysis.jar databasebuilding.LabelizeSentiment

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+java -cp ../sentimentAnalysis/out/artifacts/sentimentAnalysis_jar/sentimentAnalysis.jar deeplearning.TrainModelCSV ../sentimentAnalysis/csvMatrixChunk$1TransposeSUTranspose.csv

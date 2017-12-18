@@ -1,0 +1,5 @@
+#!/bin/sh
+
+python ../getOldTweets/CollectTweets.py --querysearch "catalonia" --since 2017-09-10 --until 2017-10-10 --language "en"
+
+

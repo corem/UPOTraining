@@ -1,0 +1,9 @@
+#!/bin/sh
+
+java -cp ../sentimentAnalysis/out/artifacts/sentimentAnalysis_jar/sentimentAnalysis.jar databasebuilding.CreateDataTable $1
+
+java -cp ../sentimentAnalysis/out/artifacts/sentimentAnalysis_jar/sentimentAnalysis.jar databasebuilding.TransposeDataTable ../sentimentAnalysis/csvMatrixChunk$1.csv ../sentimentAnalysis/csvMatrixChunk$1Transpose.csv
+
+java -cp ../sentimentAnalysis/out/artifacts/sentimentAnalysis_jar/sentimentAnalysis.jar databasebuilding.ApplySymmetricalUncertainty ../sentimentAnalysis/csvMatrixChunk$1Transpose.csv ../sentimentAnalysis/csvMatrixChunk$1TransposeSU.csv
+
+java -cp ../sentimentAnalysis/out/artifacts/sentimentAnalysis_jar/sentimentAnalysis.jar databasebuilding.TransposeDataTable ../sentimentAnalysis/csvMatrixChunk$1TransposeSU.csv ../sentimentAnalysis/csvMatrixChunk$1TransposeSUTranspose.csv
