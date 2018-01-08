@@ -8,7 +8,7 @@ import org.bson.Document;
 import java.util.*;
 
 /**
- * This class is used to apply a sentiment label to each Tweets of the MongoDB database.
+ * This class is used to extract data from the MongoDB database and create a DataSet with it.
  */
 public class CreateDataTable {
 
@@ -19,12 +19,14 @@ public class CreateDataTable {
     private static String FILE_OUTPUT = "csvMatrixChunk"+String.valueOf(CHUNK_SIZE)+".csv";
 
     public static void main(String args[]){
-
-        //Used to gain time while executing code in IDE.
-        if(args.length != 0){
-            FILE_OUTPUT = "../sentimentAnalysis/csvMatrixChunk"+args[0]+".csv";
-            CHUNK_SIZE = Integer.parseInt(args[0]);
+        if(args.length < 1){
+            System.out.println("Usage : CreateDataTable chunkSize");
+            System.exit(0);
         }
+
+        FILE_OUTPUT = "../sentimentAnalysis/csvMatrixChunk"+args[0]+".csv";
+        CHUNK_SIZE = Integer.parseInt(args[0]);
+
         createDataTable();
     }
 

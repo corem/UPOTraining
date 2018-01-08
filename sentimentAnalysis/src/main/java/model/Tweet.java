@@ -9,16 +9,18 @@ public class Tweet {
     private String message;
     private Date date;
     private String language;
+    private String sentiment;
 
-    public Tweet(String author,String message, Date date, String language){
+    public Tweet(String author,String message, Date date, String language, String sentiment){
         this.author = author;
         this.message = message;
         this.date = date;
         this.language = language;
+        this.sentiment = sentiment;
     }
 
-    public Tweet(String id, String author, String message, Date date, String language){
-        this(author, message, date, language);
+    public Tweet(String id, String author, String message, Date date, String language, String sentiment){
+        this(author, message, date, language, sentiment);
         this.id = id;
     }
 
@@ -62,6 +64,10 @@ public class Tweet {
         this.language = language;
     }
 
+    public String getSentiment() { return sentiment; }
+
+    public void setSentiment(String sentiment) { this.sentiment = sentiment; }
+
     @Override
     public String toString() {
         return "Tweet{" +
@@ -70,6 +76,7 @@ public class Tweet {
                 ", message='" + message + '\'' +
                 ", date=" + date +
                 ", language='" + language + '\'' +
+                ", sentiment='" + sentiment + '\'' +
                 '}';
     }
 }

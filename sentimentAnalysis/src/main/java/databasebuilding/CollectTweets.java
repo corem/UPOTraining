@@ -23,7 +23,7 @@ public class CollectTweets {
             @Override
             public void onStatus(Status status) {
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText() + " - " + status.getCreatedAt());
-                Tweet tweet = new Tweet(status.getUser().getScreenName(), status.getText(), status.getCreatedAt(), status.getLang());
+                Tweet tweet = new Tweet(status.getUser().getScreenName(), status.getText(), status.getCreatedAt(), status.getLang(), "");
                 dao.insertTweet(tweet);
             }
 

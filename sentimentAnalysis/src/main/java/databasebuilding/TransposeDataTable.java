@@ -19,10 +19,13 @@ public class TransposeDataTable {
 
     public static void main(String args[]){
 
-        if(args.length != 0){
-            FILE_INPUT = args[0];
-            FILE_OUTPUT = args[1];
+        if(args.length < 2){
+            System.out.println("Usage : TransposeDataTable inputFile outputFile");
+            System.exit(0);
         }
+
+        FILE_INPUT = args[0];
+        FILE_OUTPUT = args[1];
 
         CreateCSV createCSV = new CreateCSV(FILE_OUTPUT);
         Reader in = null;

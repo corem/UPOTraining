@@ -1,0 +1,3 @@
+#!/bin/sh
+
+java -cp ../sentimentAnalysis/out/artifacts/sentimentAnalysis_jar/sentimentAnalysis.jar databasebuilding.BuildNGrams 2 4

@@ -68,7 +68,8 @@ def main(argv):
                     'username': t.username,
                     'message': t.text,
                     'date': t.date.strftime("%Y-%m-%d %H:%M"),
-                    'language' : tweetCriteria.language
+                    'language' : tweetCriteria.language, 	
+		    'sentiment' : ""
                 }
 
                 print(tweet)

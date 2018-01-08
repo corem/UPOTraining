@@ -21,11 +21,13 @@ public class ApplySymmetricalUncertainty {
 
     public static void main(String args[]){
 
-        //Used to gain time while executing code in IDE.
-        if(args.length != 0){
-            FILE_INPUT = args[0];
-            FILE_OUTPUT = args[1];
+        if(args.length < 2){
+            System.out.println("Usage : ApplySymmetricalUncertainty inputFile outputFile");
+            System.exit(0);
         }
+
+        FILE_INPUT = args[0];
+        FILE_OUTPUT = args[1];
 
         applySymmetricalUncertainty();
     }

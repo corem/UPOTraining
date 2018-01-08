@@ -47,17 +47,17 @@ public class DAOTweets implements DAOTweetsInterface{
         String username = (String)document.get("username");
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-
         Date date = null;
         try {
             date = formatter.parse((String)document.get("date"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         String message = (String)document.get("message");
         String language = (String)document.get("language");
-        Tweet tweet = new Tweet(username, message, date, language);
+        String sentiment = (String)document.get("sentiment");
+        Tweet tweet = new Tweet(username, message, date, language, sentiment);
         return tweet;
     }
 
@@ -68,6 +68,8 @@ public class DAOTweets implements DAOTweetsInterface{
         return doc;
     }
 
-
+    public void updateDocument(Document oldDocument, Document newDocument){
+        collection.updateOne(oldDocument, newDocument);
+    }
 
 }
