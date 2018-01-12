@@ -1,11 +1,16 @@
 package sandbox;
 
+import com.mongodb.Block;
+import com.mongodb.client.FindIterable;
+import dao.DAOTweets;
 import deeplearning.TrainModelCSV;
+import model.Tweet;
 import org.apache.commons.lang3.ArrayUtils;
+import org.bson.Document;
 
 public class Main {
 
-    public static void main(String args[]) throws Exception{
+    //public static void main(String args[]) throws Exception{
 
         //String test = "cats running ran cactus cactuses cacti community communities";
         //String negative = "This place is a fucking hell. I hate you.";
@@ -61,7 +66,31 @@ public class Main {
 
         //System.out.println(NLPTools.preprocessTweet(urlTest2));
 
-        TrainModelCSV.main(ArrayUtils.toArray());
+        //TrainModelCSV.main(ArrayUtils.toArray());
+    //}
+
+    public static void main(String args[]){
+
+        countNumberOfTweets();
+
+    }
+
+    public static void countNumberOfTweets(){
+
+        final DAOTweets daoTweets = new DAOTweets();
+
+        FindIterable<Document> allTweet = daoTweets.getAllTweet();
+        allTweet.forEach(new Block<Document>() {
+            @Override
+            public void apply(Document document) {
+                Tweet tweet = DAOTweets.documentToTweet(document);
+
+                System.out.println(tweet.getDate());
+
+
+            }
+        });
+
     }
 
 }
