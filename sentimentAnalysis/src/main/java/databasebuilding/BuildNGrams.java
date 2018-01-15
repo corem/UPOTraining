@@ -52,7 +52,7 @@ public class BuildNGrams {
             public void apply(Document document) {
                 Tweet tweet = DAOTweets.documentToTweet(document);
 
-                System.out.println("DEBUG : "+tweet.getSentiment());
+                //System.out.println("DEBUG : "+tweet.getSentiment());
 
                 List<String> lemmasWordNet = NLPTools.preprocessTweet(tweet.getMessage());
 

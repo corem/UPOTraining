@@ -79,16 +79,8 @@ public class MongoDBStats {
                         }
                         break;
                 }
-
-
             }
-
         });
-
-        System.out.println(statsContainer);
-
+        statsContainer.printStats();
     }
-
-
-
 }

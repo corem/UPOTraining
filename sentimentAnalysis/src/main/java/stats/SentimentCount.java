@@ -36,6 +36,8 @@ public class SentimentCount {
         this.positive = positive;
     }
 
+    public int getTotal() { return negative+neutral+positive; }
+
     public void incNegative(){
         this.negative++;
     }
