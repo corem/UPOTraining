@@ -14,8 +14,8 @@ import java.util.ArrayList;
  */
 public class TransposeDataTable {
 
-    private static String FILE_INPUT = "csvMatrixChunk500TransposeSU.csv";
-    private static String FILE_OUTPUT = "csvMatrixChunk500TransposeSUTranspose.csv";
+    private static String FILE_INPUT;
+    private static String FILE_OUTPUT;
 
     public static void main(String args[]){
 
@@ -24,8 +24,8 @@ public class TransposeDataTable {
             System.exit(0);
         }
 
-        FILE_INPUT = args[0];
-        FILE_OUTPUT = args[1];
+        FILE_INPUT = "src/main/resources/"+args[0];
+        FILE_OUTPUT = "src/main/resources/"+args[1];
 
         CreateCSV createCSV = new CreateCSV(FILE_OUTPUT);
         Reader in = null;

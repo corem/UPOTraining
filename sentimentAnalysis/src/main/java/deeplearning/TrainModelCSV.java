@@ -28,40 +28,52 @@ import java.io.*;
 
 public class TrainModelCSV {
 
-    private static String INPUT_FILE = "csvMatrixChunk5000TransposeSUTranspose.csv";
+    private static String INPUT_FILE;
     private static int seed = 5;
-    private static int iterations = 100;
+    private static int iterations = 1000;
     private static int outputNum = 3;
     private static int layer2Size = 100;
     private static int layer3size = 100;
 
     public static void main(String[] args) throws  Exception {
 
-        //Used to gain time while executing code in IDE.
-        if(args.length != 0){
-            INPUT_FILE = args[0];
+        if(args.length < 1){
+            System.out.println("Usage : TrainModelCSV inputFile");
+            System.exit(0);
         }
 
-        //First: get the dataset using the record reader. CSVRecordReader handles loading/parsing
+        INPUT_FILE = args[0];
+
         int numLinesToSkip = 1;
         char delimiter = ',';
         RecordReader recordReader = new CSVRecordReader(numLinesToSkip,delimiter);
+
+        System.out.println("Loading file...");
         ClassPathResource classPathResource = new ClassPathResource(INPUT_FILE);
+
+        //System.out.println(classPathResource.getFile().getAbsolutePath());
+
         File file = classPathResource.getFile();
         FileSplit fileSplit = new FileSplit(file);
         recordReader.initialize(fileSplit);
 
+        System.out.println("Get file column number...");
         int columnNumber = getCSVColumnNumber();
 
-        //Second: the RecordReaderDataSetIterator handles conversion to DataSet objects, ready for use in neural network
         int labelIndex = columnNumber - 1;
-        int batchSize = 5000;
+        int batchSize = 1000;
 
+        System.out.println("Initialize dataset iterator...");
         DataSetIterator iterator = new RecordReaderDataSetIterator(recordReader,batchSize,labelIndex,outputNum);
-        DataSet allData = iterator.next();
-        allData.shuffle();
-        SplitTestAndTrain testAndTrain = allData.splitTestAndTrain(0.65);  //Use 65% of data for training
 
+        System.out.println("Get iterator.next()");
+        DataSet allData = iterator.next();
+
+        System.out.println("Shuffling data");
+        allData.shuffle();
+
+        System.out.println("Spliting training and test data");
+        SplitTestAndTrain testAndTrain = allData.splitTestAndTrain(0.65);  //Use 65% of data for training
         DataSet trainingData = testAndTrain.getTrain();
         DataSet testData = testAndTrain.getTest();
 
@@ -77,7 +89,7 @@ public class TrainModelCSV {
 
         final int numInputs = columnNumber-1;
 
-        System.out.println("Build model....");
+        System.out.println("Build model...");
         MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
                 .seed(seed)
                 .iterations(iterations)
@@ -96,7 +108,7 @@ public class TrainModelCSV {
                 .backprop(true).pretrain(false)
                 .build();
 
-        //run the model
+        System.out.println("Running model...");
         MultiLayerNetwork model = new MultiLayerNetwork(conf);
         model.init();
         model.setListeners(new ScoreIterationListener(100));
@@ -106,6 +118,7 @@ public class TrainModelCSV {
         //MultiLayerNetwork bestModel = findBestNetwork();
 
         //evaluate the model on the test set
+        System.out.println("Print model...");
         Evaluation eval = new Evaluation(outputNum);
         INDArray output = model.output(testData.getFeatureMatrix());
         eval.eval(testData.getLabels(), output);
@@ -224,7 +237,13 @@ public class TrainModelCSV {
     public static int getCSVColumnNumber(){
         Reader in = null;
         try {
-            in = new FileReader(INPUT_FILE);
+
+            ClassPathResource classPathResource = new ClassPathResource(INPUT_FILE);
+
+            String file = classPathResource.getFile().getAbsolutePath();
+
+            //in = new FileReader(INPUT_FILE);
+            in = new FileReader(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

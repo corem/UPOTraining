@@ -7,6 +7,10 @@ import dao.DAOTweetsNGrams;
 import nlp.NLPTools;
 import org.bson.Document;
 
+
+/**
+ * This class is used to apply a sentiment label on each tweet of the MongoDB database
+ */
 public class AddSentimentLabel {
 
     public static void main(String args[]){

@@ -6,11 +6,37 @@ import dao.DAOTweets;
 import deeplearning.TrainModelCSV;
 import model.Tweet;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.shingle.ShingleFilter;
+import org.apache.lucene.analysis.standard.StandardFilter;
+import org.apache.lucene.analysis.standard.StandardTokenizer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.util.Version;
 import org.bson.Document;
+
+import java.io.StringReader;
 
 public class Main {
 
-    //public static void main(String args[]) throws Exception{
+    public static void main(String args[]) throws Exception{
+
+        String theSentence = "this is a dog and some cat";
+        StringReader reader = new StringReader(theSentence);
+        StandardTokenizer source = new StandardTokenizer(Version.LUCENE_46, reader);
+        TokenStream tokenStream = new StandardFilter(Version.LUCENE_46, source);
+        ShingleFilter sf = new ShingleFilter(tokenStream, 2, 3);
+        sf.setOutputUnigrams(false);
+
+        CharTermAttribute charTermAttribute = sf.addAttribute(CharTermAttribute.class);
+        sf.reset();
+
+        while (sf.incrementToken()) {
+            System.out.println(charTermAttribute.toString());
+        }
+
+        sf.end();
+        sf.close();
+    }
 
         //String test = "cats running ran cactus cactuses cacti community communities";
         //String negative = "This place is a fucking hell. I hate you.";
@@ -69,7 +95,7 @@ public class Main {
         //TrainModelCSV.main(ArrayUtils.toArray());
     //}
 
-    public static void main(String args[]){
+    /*public static void main(String args[]){
 
         countNumberOfTweets();
 
@@ -91,6 +117,8 @@ public class Main {
             }
         });
 
-    }
+    }*/
+
+
 
 }

@@ -12,11 +12,8 @@ import java.util.*;
  */
 public class CreateDataTable {
 
-    //private static String FILE_OUTPUT = "csvMatrix.csv";
-    //private static int CHUNK_SIZE = 0;
-
-    private static int CHUNK_SIZE = 5000;
-    private static String FILE_OUTPUT = "csvMatrixChunk"+String.valueOf(CHUNK_SIZE)+".csv";
+    private static int CHUNK_SIZE;
+    private static String FILE_OUTPUT;
 
     public static void main(String args[]){
         if(args.length < 1){
@@ -24,8 +21,8 @@ public class CreateDataTable {
             System.exit(0);
         }
 
-        FILE_OUTPUT = "../sentimentAnalysis/csvMatrixChunk"+args[0]+".csv";
         CHUNK_SIZE = Integer.parseInt(args[0]);
+        FILE_OUTPUT = "src/main/resources/csvMatrixChunk"+CHUNK_SIZE+".csv";
 
         createDataTable();
     }

@@ -6,6 +6,9 @@ import dao.DAOTweetsNGrams;
 import nlp.NLPTools;
 import org.bson.Document;
 
+/**
+ * Not used anymore
+ */
 public class LabelizeSentiment {
 
     public static void main(String args[]){

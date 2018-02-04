@@ -8,9 +8,12 @@ import model.Tweet;
 import model.TweetNGrams;
 import nlp.NLPTools;
 import nlp.WordNet;
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.ngram.NGramTokenizer;
 import org.apache.lucene.analysis.shingle.ShingleFilter;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.util.Version;
@@ -38,10 +41,14 @@ public class BuildNGrams {
         int min = Integer.parseInt(args[0]);
         int max = Integer.parseInt(args[1]);
 
-        buildNGrams(min, max);
+        try {
+            buildNGrams(min, max);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void buildNGrams(int min, int max){
+    public static void buildNGrams(int min, int max) throws Exception{
         final DAOTweetsNGrams daoTweetsNGrams = new DAOTweetsNGrams();
         final DAOTweets daoTweets = new DAOTweets();
         final WordNet wordNet = new WordNet();
@@ -49,7 +56,7 @@ public class BuildNGrams {
         FindIterable<Document> allTweet = daoTweets.getAllTweet();
         allTweet.forEach(new Block<Document>() {
             @Override
-            public void apply(Document document) {
+            public void apply(Document document){
                 Tweet tweet = DAOTweets.documentToTweet(document);
 
                 //System.out.println("DEBUG : "+tweet.getSentiment());
@@ -61,25 +68,28 @@ public class BuildNGrams {
                     message+= string+" ";
                 }
 
-                Reader reader = new StringReader(message);
-                TokenStream nGramTokenizer = new StandardTokenizer(Version.LUCENE_4_10_3, reader);
-                nGramTokenizer = new ShingleFilter(nGramTokenizer, min, max);
-                //NGramTokenizer nGramTokenizer = new NGramTokenizer(reader, 2, 2);
+                StringReader reader = new StringReader(message);
+                StandardTokenizer source = new StandardTokenizer(Version.LUCENE_46, reader);
+                TokenStream tokenStream = new StandardFilter(Version.LUCENE_46, source);
+                ShingleFilter sf = new ShingleFilter(tokenStream, min, max);
+                sf.setOutputUnigrams(false);
 
-                CharTermAttribute charTermAttribute = nGramTokenizer.addAttribute(CharTermAttribute.class);
+                CharTermAttribute charTermAttribute = sf.addAttribute(CharTermAttribute.class);
 
                 List<String> lemmaStrings = new ArrayList<>();
 
                 try {
-                    nGramTokenizer.reset();
+                sf.reset();
 
-                    while (nGramTokenizer.incrementToken()) {
-                        String token = charTermAttribute.toString();
-                        System.out.println(token);
-                        lemmaStrings.add(token);
-                    }
-                    nGramTokenizer.end();
-                    nGramTokenizer.close();
+                while (sf.incrementToken()) {
+                    //System.out.println(charTermAttribute.toString());
+                    String token = charTermAttribute.toString();
+                    System.out.println(token);
+                    lemmaStrings.add(token);
+                }
+
+                sf.end();
+                sf.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
